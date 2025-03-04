@@ -1,9 +1,0 @@
-{
-  "app/page.js -> react-chatbotify": {
-    "id": "app/page.js -> react-chatbotify",
-    "files": [
-      "static/css/_app-pages-browser_node_modules_react-chatbotify_dist_index_js.css",
-      "static/chunks/_app-pages-browser_node_modules_react-chatbotify_dist_index_js.js"
-    ]
-  }
-}
