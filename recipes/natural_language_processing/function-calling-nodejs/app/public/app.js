@@ -1,6 +1,7 @@
 function app () {
   const sendMessageButton = document.getElementById('sendMessage');
   const userMessageText = document.getElementById('userMessage');
+  const statusSpinner = document.getElementById('statusSpinner');
   const chartCtx = document.getElementById('myChart');
   let myLineChart;
 
@@ -27,6 +28,12 @@ function app () {
 
     // reset the input
     userMessageText.value = '';
+
+    // Disable the button
+    sendMessageButton.setAttribute('disabled', 'disabled');
+
+    //unhide the spinner
+    statusSpinner.style.display = '';
 
     // Send to the server
     sendToServer(userMessageTextValue);
@@ -65,6 +72,12 @@ function app () {
     });
 
     const jsonResult = await result.json();
+
+    // undisable the button
+    sendMessageButton.removeAttribute('disabled');
+
+    //hide the spinner
+    statusSpinner.style.display = 'none';
     createChart(jsonResult.result);
   }
 }
