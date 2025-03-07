@@ -11,9 +11,33 @@ import {
 } from '@langchain/langgraph';
 
 const model_service = process.env.MODEL_ENDPOINT ||
-                      'http://localhost:58327';
+                      'http://localhost:58091';
+
+/////////////////////////////////////
+// Function to check if/which LLM is available
+export async function checkingModelService() {
+  let server;
+  const startTime = new Date();
+  while (true) {
+    let result = await fetch(`${model_service}/v1/models`);
+    if (result.status === 200) {
+      server = 'Llamacpp_Python';
+      break;
+    };
+
+    await new Promise(x => setTimeout(x, 100));
+  };
+
+  const endTime = new Date();
+  return { details: `${server} Model Service Available\n` +
+                    `${(endTime.getSeconds() - startTime.getSeconds()) } seconds`,
+           server: server
+         };
+};
 
 export async function askQuestion(city) {
+  // Wait until the server is running
+  const modelServer = await checkingModelService();
 
   const prompt = ChatPromptTemplate.fromMessages([
     [ 'system',
@@ -26,10 +50,18 @@ export async function askQuestion(city) {
 
   const tools = [weather];
   const toolNode = new ToolNode(tools);
+  let llm;
+  try {
+    llm = createLLM(modelServer.server);
+  } catch (err) {
+    console.log(err);
+    return {
+      err: err
+    }
+  }
+  const llmWithTools = llm.bindTools([weather], {tool_choice: 'weather'});
 
   const callModel = async function(state) {
-    const llm = createLLM('Llamacpp_Python');
-    const llmWithTools = llm.bindTools([weather], {tool_choice: 'weather'});
     const messages = await prompt.invoke({
       location: state.location
     });
@@ -76,14 +108,6 @@ function createLLM(server) {
     });
     return llm;
   } else {
-    const llm = new ChatOpenAI({
-      openAIApiKey: 'EMPTY',
-      model: process.env.AI_MODEL_NAME || 'mistral',
-      configuration: {
-        baseURL: process.env.AI_BASE_URL || 'http://localhost:11434/v1'
-      }
-    });
-    return llm;
-    // throw new Error('Unknown llm');
+    throw new Error('Unknown llm');
   };
 };

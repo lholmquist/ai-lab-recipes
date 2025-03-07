@@ -1,15 +1,15 @@
-# Chat Application
+# Function Calling Application
 
-  This recipe helps developers start building their own custom LLM enabled chat applications. It consists of two main components: the Model Service and the AI Application.
+  This recipe helps developers start building their own AI applications with function calling capabilities. It consists of two main components: the Model Service and the AI Application.
 
   There are a few options today for local Model Serving, but this recipe will use [`llama-cpp-python`](https://github.com/abetlen/llama-cpp-python) and their OpenAI compatible Model Service. There is a Containerfile provided that can be used to build this Model Service within the repo, [`model_servers/llamacpp_python/base/Containerfile`](/model_servers/llamacpp_python/base/Containerfile).
 
-  The AI Application will connect to the Model Service via its OpenAI compatible API. The recipe relies on [Langchain's](https://js.langchain.com/v0.2/docs/introduction/) Typescript package to simplify communication with the Model Service and uses [react](https://react.dev/) and [react-chatbotify](https://react-chatbotify.tjtanjin.com/) for the UI layer. You can find an example of the chat application below.
+  The AI Application will connect to the Model Service via its OpenAI compatible API. The recipe relies on [Langchain's](https://js.langchain.com/v0.2/docs/introduction/) Typescript package to simplify communication with the Model Service and [langgraph.js](https://langchain-ai.github.io/langgraphjs/) to enable the LLM to call functions.  It uses [fastify](https://fastify.dev/) as the backend-server and chart.js to plot the weather data returned. You can find an example of the chat application below.
 
-![](/assets/chatbot_nodejs_ui.png) 
+![](/assets/function_calling_nodejs_ui.png)
 
 
-## Try the Chat Application
+## Try the Function Application
 
 The [Podman Desktop](https://podman-desktop.io) [AI Lab Extension](https://github.com/containers/podman-desktop-extension-ai-lab) includes this recipe among others. To try it out, open `Recipes Catalog` -> `function-calling-nodejs` and follow the instructions to start the application.
 
@@ -51,7 +51,7 @@ podman ps
 ```
 
 Once the Pod and its containers are running, the application can be accessed at `http://localhost:8501`. However, if you started the app via the podman desktop UI, a random port will be assigned instead of `8501`. Please use the AI App Details `Open AI App` button to access it instead. 
-Please refer to the section below for more details about [interacting with the chatbot application](#interact-with-the-ai-application).
+Please refer to the section below for more details about [interacting with the function calling application](#interact-with-the-ai-application).
 
 To stop and remove the Pod, run:
 
@@ -121,7 +121,7 @@ make run
 
 ## Interact with the AI Application
 
-Everything should now be up an running with the chat application available at [`http://localhost:8501`](http://localhost:8501). By using this recipe and getting this starting point established, users should now have an easier time customizing and building their own LLM enabled chatbot applications.   
+Everything should now be up an running with the function calling application available at [`http://localhost:8501`](http://localhost:8501). By using this recipe and getting this starting point established, users should now have an easier time customizing and building their own LLM enabled function calling applications.
 
 ## Embed the AI Application in a Bootable Container Image
 

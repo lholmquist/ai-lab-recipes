@@ -1,10 +1,6 @@
 import { askQuestion } from '../ai/weather-prompt.mjs';
 
 async function temperatureRoutes (fastify, options) {
-  fastify.get('/api/playground', (request, reply) => {
-    return reply.send('This is a GET reqest bro');
-  });
-
   fastify.post('/api/temperatures', async (request, reply) => {
     const city = request.body.city;
 

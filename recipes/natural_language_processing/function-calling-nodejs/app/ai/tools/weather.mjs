@@ -8,7 +8,6 @@ const weatherSchema = z.object({
 
 const weather = tool(
   async function ({ latitude, longitude }) {
-    console.log(latitude, longitude);
     const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m`);
     const json = await response.json();
     return json;
